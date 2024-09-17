@@ -34,5 +34,10 @@ public class GraphProject {
      */
     public static void main(String[] args) {
         // This is the main file for the program.
+        int hashTableSize = Integer.parseInt(args[0]);
+        String fileName = args[1];
+
+        Controller controller = new Controller(hashTableSize);
+        CommandProcessor commandProcessor = new CommandProcessor(fileName);
     }
 }
