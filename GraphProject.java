@@ -3,7 +3,7 @@
  * Main for Graph project (CS3114/CS5040 Fall 2023 Project 4).
  * Usage: java GraphProject <init-hash-size> <command-file>
  *
- * @author Marie Muya and Maanasa 
+ * @author Maanasa Ramakrishnan (maanasar) & Marie Muya
  * @version 2024
  *
  */
@@ -21,7 +21,7 @@
 // anyone other than my partner (in the case of a joint
 // submission), instructor, ACM/UPE tutors or the TAs assigned
 // to this course. I understand that I may discuss the concepts
-// of this program with other students, and that another student
+// of this program with others students, and that another student
 // may help me debug my program so long as neither of us writes
 // anything during the discussion or modifies any computer file
 // during the discussion. I have violated neither the spirit nor
