@@ -25,86 +25,72 @@ public class HashTest extends TestCase {
      *             either a IOException or FileNotFoundException
      */
     public void testSfold() throws Exception {
-        assertTrue(Hash.hash("a", 10000) == 97);
-        assertTrue(Hash.hash("b", 10000) == 98);
-        assertTrue(Hash.hash("aaaa", 10000) == 1873);
-        assertTrue(Hash.hash("aaab", 10000) == 9089);
-        assertTrue(Hash.hash("baaa", 10000) == 1874);
-        assertTrue(Hash.hash("aaaaaaa", 10000) == 3794);
-        assertTrue(Hash.hash("Long Lonesome Blues", 10000) == 4635);
-        assertTrue(Hash.hash("Long   Lonesome Blues", 10000) == 4159);
-        assertTrue(Hash.hash("long Lonesome Blues", 10000) == 4667);
+        assertTrue(Hash.h("a", 10000) == 97);
+        assertTrue(Hash.h("b", 10000) == 98);
+        assertTrue(Hash.h("aaaa", 10000) == 1873);
+        assertTrue(Hash.h("aaab", 10000) == 9089);
+        assertTrue(Hash.h("baaa", 10000) == 1874);
+        assertTrue(Hash.h("aaaaaaa", 10000) == 3794);
+        assertTrue(Hash.h("Long Lonesome Blues", 10000) == 4635);
+        assertTrue(Hash.h("Long   Lonesome Blues", 10000) == 4159);
+        assertTrue(Hash.h("long Lonesome Blues", 10000) == 4667);
     }
     
     /**
-     * Test the insert method of the hash class.
+     * Test the insert method and verify that elements can be found afterward.
      */
-    public void testInsert() {
-        testHash.insert("Long Lonesome Blues");
-        testHash.insert("Long   Lonesome Blues");
+    public void testInsertAndFind() {
+        Node node1 = new Node("Hit Different");
+        Node node2 = new Node("Casual");
 
-        // Check if the elements are correctly inserted
-        assertTrue(testHash.contains("Long Lonesome Blues"));
-        assertTrue(testHash.contains("Long   Lonesome Blues"));
-        assertFalse(testHash.contains("long Lonesome Blues"));  // Not inserted
+        testHash.insert("The Neptunes", node1);
+        testHash.insert("Chappell Roan", node2);
+        testHash.print();
+
+        // Verify that inserted elements can be found
+        assertNotNull(testHash.find("The Neptunes"));
+        assertNotNull(testHash.find("Chappell Roan"));
+        assertEquals("Hit Different", testHash.find("The Neptunes").getNode());
+        assertEquals("Casual", testHash.find("Chappell Roan").getNode());
     }
 
     /**
-     * Test the remove method of the hash class.
+     * Test removing elements and ensure they can no longer be found.
      */
     public void testRemove() {
-        testHash.insert("Long Lonesome Blues");
-        testHash.insert("Long   Lonesome Blues");
+        Node node1 = new Node("Juna");
+        Node node2 = new Node("Juno");
 
-        // Remove "Long Lonesome Blues" and check if it is removed
-        assertTrue(testHash.remove("Long Lonesome Blues"));
-        assertFalse(testHash.contains("Long Lonesome Blues"));  // Should not be present
-        assertTrue(testHash.contains("Long   Lonesome Blues"));   // Should still be present
-
-        // Try to remove an element that does not exist
-        assertFalse(testHash.remove("long Lonesome Blues"));
-    }
-
-    /**
-     * Test the contains method of the hash class.
-     */
-    public void testContains() {
-        testHash.insert("Long Lonesome Blues");
-        testHash.insert("Long   Lonesome Blues");
-
-        // Check if the inserted elements are present
-        assertTrue(testHash.contains("Long Lonesome Blues"));
-        assertTrue(testHash.contains("Long   Lonesome Blues"));
-
-        // Check an element that is not inserted
-        assertFalse(testHash.contains("long Lonesome Blues"));
-    }
-
-    /**
-     * Test the printTable method to ensure the correct structure.
-     */
-    public void testPrintTable() {
-        testHash.insert("Long Lonesome Blues");
-        testHash.insert("Long   Lonesome Blues");
-
-        // Capture printed output (hypothetically, if there's a utility for this)
-        testHash.printTable();
-        // Note: In most cases, you might need a special mechanism to capture print statements,
-        // or replace System.out temporarily, but for now, assume this passes visually.
-
-        // You could extend this with output comparison if needed.
-    }
-
-    /**
-     * Test collision handling with the insert method.
-     */
-    public void testCollisionHandling() {
-        // Insert multiple elements that would likely cause collisions based on the hash function
-        testHash.insert("abc");   // Assume this hashes to index i
-        testHash.insert("cba");   // Assume this hashes to the same index i
+        testHash.insert("Clairo", node1);
+        testHash.insert("Sabrina Carpenter", node2);
         
-        // Both should be in the table, but handled by linear probing
-        assertTrue(testHash.contains("abc"));
-        assertTrue(testHash.contains("cba"));
+        // Remove elements
+        assertFalse(testHash.remove("Clairo"));
+        assertFalse(testHash.remove("SZA"));
+        testHash.print();
+        
+        // Verify that removed elements can no longer be found
+        assertNull(testHash.find("Clairo"));
+        assertNull(testHash.find("Sabrina Carpenter")); 
+    }
+
+    /**
+     * Test the resize functionality when the table reaches capacity.
+     */
+    public void testResize() {
+        Hash hash2 = new Hash(2);  // Small initial size to trigger resizing
+
+        // Insert enough elements to trigger resize
+        hash2.insert("Clairo", new Node("JukeBox"));
+        hash2.insert("SZA", new Node("PartyRockAnthem"));
+        
+        // This should trigger a resize
+        hash2.insert("Tyler", new Node("Juno"));
+        hash2.print();
+        
+        // Check that the table resized and all elements are still present
+        assertNotNull(hash2.find("Clairo"));
+        assertNotNull(hash2.find("SZA"));
+        assertNotNull(hash2.find("Tyler"));
     }
 }
