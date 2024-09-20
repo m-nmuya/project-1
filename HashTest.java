@@ -87,12 +87,8 @@ public class HashTest extends TestCase {
         testHash.insert("Long Lonesome Blues");
         testHash.insert("Long   Lonesome Blues");
 
-        // Capture printed output (hypothetically, if there's a utility for this)
         testHash.printTable();
-        // Note: In most cases, you might need a special mechanism to capture print statements,
-        // or replace System.out temporarily, but for now, assume this passes visually.
 
-        // You could extend this with output comparison if needed.
     }
 
     /**
