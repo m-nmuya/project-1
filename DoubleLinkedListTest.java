@@ -131,4 +131,26 @@ public class DoubleLinkedListTest extends TestCase {
         list.add("Long   Lonesome Blues");
         assertEquals(1, list.getSize());
     }
+    
+    /** 
+     * Test removing the tail element from the list.
+     */
+    public void testRemoveTail() {
+        list.add("Lady Gaga");
+        list.add("Bob Dylan");
+        list.add("SZA");
+
+        // Initially, the tail should be "Third"
+        assertEquals("SZA", list.getHead().next.next.data);
+
+        // Remove the tail element ("Third")
+        list.remove("SZA");
+
+        // Verify that the new tail is "Second" and its next pointer is null
+        assertEquals("Bob Dylan", list.getHead().next.data);
+        assertNull(list.getHead().next.next);
+
+        // Verify that the size has been updated
+        assertEquals(2, list.getSize());
+    }
 }
