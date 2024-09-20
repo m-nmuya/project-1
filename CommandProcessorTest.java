@@ -166,4 +166,81 @@ public class CommandProcessorTest extends TestCase {
         // Check for unknown command output
         assertTrue(actualOutput.contains("Unknown command"));
     }
+    
+    /**
+     * Test invalid command format (command with less than 2 parts).
+     */
+    public void testInvalidCommandFormat() {
+        String command = "insert"; // Missing the second part
+
+        // Capture the output
+        commandProcessor.processCommand(command);
+        String actualOutput = systemOut().getHistory();
+
+        // Check for the invalid command format message
+        assertTrue(actualOutput.contains("Invalid command format: insert"));
+    }
+
+    /**
+     * Test invalid remove command format.
+     */
+    public void testInvalidRemove2() {
+        String command = "remove"; // Missing the item to remove
+
+        // Capture the output
+        commandProcessor.processCommand(command);
+        String actualOutput = systemOut().getHistory();
+
+        // Check for the invalid remove command format message
+        assertTrue(actualOutput.contains("Invalid command format: remove"));
+    }
+
+    /**
+     * Test valid remove song command.
+     */
+    public void testRemoveSong2() {
+        // Insert a song to be removed later
+        controller.insert("Blind Lemon Jefferson", "Long Lonesome Blues");
+
+        String command = "remove song Long Lonesome Blues";
+
+        // Capture the output
+        commandProcessor.processCommand(command);
+        String actualOutput = systemOut().getHistory();
+
+        // Check that the song was removed
+        assertTrue(actualOutput.contains("Long Lonesome Blues"));
+    }
+
+    /**
+     * Test invalid print command format.
+     */
+    public void testInvalidPrintCommandFormat() {
+        String command = "print"; // Missing what to print (artist or song)
+
+        // Capture the output
+        commandProcessor.processCommand(command);
+        String actualOutput = systemOut().getHistory();
+
+        // Check for the invalid print command format message
+        assertTrue(actualOutput.contains("Invalid command format: print"));
+    }
+
+    /**
+     * Test valid print graph command.
+     */
+    public void testPrintGraphCommand() {
+        // Insert data into the graph
+        controller.insert("Blind Lemon Jefferson", "Long Lonesome Blues");
+        controller.insert("Ma Rainey", "Ma Rainey's Black Bottom");
+
+        String command = "print graph";
+
+        // Capture the output
+        commandProcessor.processCommand(command);
+        String actualOutput = systemOut().getHistory();
+
+        // Check that the graph was printed
+        assertTrue(actualOutput.contains("There are 2 connected components"));
+    }
 }
