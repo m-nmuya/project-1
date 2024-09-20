@@ -6,8 +6,9 @@ import java.nio.file.Paths;
 /**
  * This class was designed to test the GraphProject
  *
- * @author <Put something here>
- * @version <Put something here>
+ * @author Maanasa Ramakrishnan (maanasar)
+           Marie Muya (mariem26)
+ * @version 2024.09.20
  */
 public class GraphProjectTest extends TestCase {
     // ----------------------------------------------------------
@@ -66,9 +67,8 @@ public class GraphProjectTest extends TestCase {
             "solutionTestData/P1_sampleOutput.txt");
 
         // Compare the two outputs
-        // TODO: uncomment the following line
         // once you have implemented your project
-        // assertFuzzyEquals(expectedOutput, actualOutput);
-
+       
+        assertFuzzyEquals(expectedOutput, actualOutput);
     }
 }
