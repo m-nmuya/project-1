@@ -25,11 +25,11 @@ public class NodeTest extends TestCase {
      * Test the constructor and data field.
      */
     public void testConstructor() {
-        assertEquals("Song A", node1.data);
+        assertEquals("Long Lonesome Blues", node1.data);
         assertNull(node1.next);
         assertNull(node1.prev);
 
-        assertEquals("Song B", node2.data);
+        assertEquals("Ma Rainey's Black Bottom", node2.data);
         assertNull(node2.next);
         assertNull(node2.prev);
     }
