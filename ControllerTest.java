@@ -79,11 +79,6 @@ public class ControllerTest extends TestCase {
         // Add more entries to trigger table doubling
         controller.insert("Ma Rainey", "Fixin' To Die Blues");
 
-        // Double the size of the song hash table manually
-       // controller.doubleTableSize(controller.songList);
-
-        // Verify the size has increased and rehashing works
-        //assertEquals(20, controller.songList.length); // Assuming the initial size was 10
     }
 
     /**
