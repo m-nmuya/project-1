@@ -140,10 +140,10 @@ public class DoubleLinkedListTest extends TestCase {
         list.add("Bob Dylan");
         list.add("SZA");
 
-        // Initially, the tail should be "Third"
+        // Initially, the tail should be "SZA"
         assertEquals("SZA", list.getHead().next.next.data);
 
-        // Remove the tail element ("Third")
+        // Remove the tail element ("SZA")
         list.remove("SZA");
 
         // Verify that the new tail is "Second" and its next pointer is null
@@ -152,5 +152,46 @@ public class DoubleLinkedListTest extends TestCase {
 
         // Verify that the size has been updated
         assertEquals(2, list.getSize());
+    }
+    
+    /** 
+     * Test removing an element that doesn't exist in the list.
+     */
+    public void testRemoveNonExistentElement() {
+        list.add("Clairo");
+        list.add("Tyler The Creator");
+        list.add("PinkPantheresss");
+        
+        list.remove("Tyla");
+
+        // The list structure and size should remain unchanged
+        assertEquals(3, list.getSize());
+        assertEquals("Clairo", list.getHead().data);
+        assertEquals("Tyler The Creator", list.getHead().next.data);
+        assertEquals("PinkPantheresss", list.getHead().next.next.data);
+    }
+    
+    /** 
+     * Test removing the last element in the list and checking that tail becomes null.
+     */
+    public void testTailBecomesNull() {
+        list.add("Clairo");
+        list.add("SZA");
+
+        // Remove tail
+        list.remove("SZA");
+
+        assertEquals("Clairo", list.getHead().data);
+        assertEquals("Clairo", list.getHead().data);
+        assertNull(list.getHead().next);
+        assertEquals(1, list.getSize());
+
+        // Remove the last remaining element 
+        list.remove("Clairo");
+
+        // Verify that both head and tail are now null
+        assertNull(list.getHead());
+        assertNull(list.getHead());
+        assertTrue(list.isEmpty());
     }
 }
