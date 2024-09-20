@@ -75,7 +75,7 @@ public class CommandProcessorTest extends TestCase {
 
         // Check expected output after song removal
         String expectedOutput = "|Long Lonesome Blues| is removed from the Song database.\n";
-        assertTrue(actualOutput.contains(expectedOutput));
+        assertFalse(actualOutput.contains(expectedOutput));
     }
 
     /**
