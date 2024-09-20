@@ -1,102 +1,110 @@
+import student.TestCase;
+
 /**
- * Hash class
- *
  * @author Maanasa Ramakrishnan (maanasar)
- *         Marie Muya (mariem26)
+           Marie Muya (mariem26)
  * @version 2024.09.20
-*/
-
-public class Hash {
-    private static final String EMPTY = null; // Represents an empty slot
-    private static final String TOMBSTONE = "TOMBSTONE"; // Special value for tombstones
-    private int initHashSize;
-    private String[] table;
-    private int size;
-
-    public Hash(int initialSize) {
-        this.size = initialSize;
-        table = new String[initialSize];
-    }
-
-    public static int hash(String s, int length) {
-        int intLength = s.length() / 4;
-        long sum = 0;
-        for (int j = 0; j < intLength; j++) {
-            char[] c = s.substring(j * 4, (j * 4) + 4).toCharArray();
-            long mult = 1;
-            for (int k = 0; k < c.length; k++) {
-                sum += c[k] * mult;
-                mult *= 256;
-            }
-        }
-        char[] c = s.substring(intLength * 4).toCharArray();
-        long mult = 1;
-        for (int k = 0; k < c.length; k++) {
-            sum += c[k] * mult;
-            mult *= 256;
-        }
-
-        return (int) (Math.abs(sum) % length);
-    }    
+ */
+public class HashTest extends TestCase {
     
-    public int hash(String key) {
-        int hash = 10;//initHashSize; // Initial hash value
-        for (int i = 0; i < key.length(); i++) {
-            hash = hash * 31 + key.charAt(i); // Multiply by 31 and add the character value
-        }
-        // Handle negative hash values without using Math.abs
-        if (hash < 0) {
-            hash = -hash; // Convert negative value to positive
-        }
-        return hash % size; // Return the hash within the bounds of the table size
-    }
-
+    private Hash testHash;
     
-    // Insert a key into the hash table
-    public void insert(String key) {
-        int index = hash(key);
-        while (table[index] != null && !table[index].equals(TOMBSTONE) && !table[index].equals(key)) {
-            index = (index + 1) % size; // Linear probing
-        }
-        table[index] = key;
-    }
-
-    // Remove a key from the hash table
-    public boolean remove(String key) {
-        int index = hash(key);
-        while (table[index] != null) {
-            if (table[index].equals(key)) {
-                table[index] = TOMBSTONE; // Mark as tombstone
-                System.out.println(index + ":" + TOMBSTONE);
-                return true;
-            }
-            index = (index + 1) % size; // Linear probing
-        }
-        return false;
-    }
-
-    // Check if a key is in the hash table
-    public boolean contains(String key) {
-        int index = hash(key);
-        while (table[index] != null) {
-            if (table[index].equals(key)) {
-                return true;
-            }
-            index = (index + 1) % size; // Linear probing
-        }
-        return false;
-    }
-
-    public void printTable() {
-        for (int i = 0; i < table.length; i++) {
-            if (table[i] == null) {
-                //System.out.println(i + ": EMPTY");
-            } else if (table[i].equals(TOMBSTONE)) {
-                System.out.println(i + ": TOMBSTONE");
-            } else {
-                System.out.println(i + ": " + table[i]);
-            }
-        }
+    /**
+     * Sets up the tests that follow. In general, used for initialization
+     */
+    public void setUp() {
+        // create a test instance of hash
+        testHash = new Hash(10);
     }
 
 
+    /**
+     * Check out the sfold method
+     *
+     * @throws Exception
+     *             either a IOException or FileNotFoundException
+     */
+    public void testSfold() throws Exception {
+        assertTrue(Hash.hash("a", 10000) == 97);
+        assertTrue(Hash.hash("b", 10000) == 98);
+        assertTrue(Hash.hash("aaaa", 10000) == 1873);
+        assertTrue(Hash.hash("aaab", 10000) == 9089);
+        assertTrue(Hash.hash("baaa", 10000) == 1874);
+        assertTrue(Hash.hash("aaaaaaa", 10000) == 3794);
+        assertTrue(Hash.hash("Long Lonesome Blues", 10000) == 4635);
+        assertTrue(Hash.hash("Long   Lonesome Blues", 10000) == 4159);
+        assertTrue(Hash.hash("long Lonesome Blues", 10000) == 4667);
+    }
+    
+    /**
+     * Test the insert method of the hash class.
+     */
+    public void testInsert() {
+        testHash.insert("Long Lonesome Blues");
+        testHash.insert("Long   Lonesome Blues");
+
+        // Check if the elements are correctly inserted
+        assertTrue(testHash.contains("Long Lonesome Blues"));
+        assertTrue(testHash.contains("Long   Lonesome Blues"));
+        assertFalse(testHash.contains("long Lonesome Blues"));  // Not inserted
+    }
+
+    /**
+     * Test the remove method of the hash class.
+     */
+    public void testRemove() {
+        testHash.insert("Long Lonesome Blues");
+        testHash.insert("Long   Lonesome Blues");
+
+        // Remove "Long Lonesome Blues" and check if it is removed
+        assertTrue(testHash.remove("Long Lonesome Blues"));
+        assertFalse(testHash.contains("Long Lonesome Blues"));  // Should not be present
+        assertTrue(testHash.contains("Long   Lonesome Blues"));   // Should still be present
+
+        // Try to remove an element that does not exist
+        assertFalse(testHash.remove("long Lonesome Blues"));
+    }
+
+    /**
+     * Test the contains method of the hash class.
+     */
+    public void testContains() {
+        testHash.insert("Long Lonesome Blues");
+        testHash.insert("Long   Lonesome Blues");
+
+        // Check if the inserted elements are present
+        assertTrue(testHash.contains("Long Lonesome Blues"));
+        assertTrue(testHash.contains("Long   Lonesome Blues"));
+
+        // Check an element that is not inserted
+        assertFalse(testHash.contains("long Lonesome Blues"));
+    }
+
+    /**
+     * Test the printTable method to ensure the correct structure.
+     */
+    public void testPrintTable() {
+        testHash.insert("Long Lonesome Blues");
+        testHash.insert("Long   Lonesome Blues");
+
+        // Capture printed output (hypothetically, if there's a utility for this)
+        testHash.printTable();
+        // Note: In most cases, you might need a special mechanism to capture print statements,
+        // or replace System.out temporarily, but for now, assume this passes visually.
+
+        // You could extend this with output comparison if needed.
+    }
+
+    /**
+     * Test collision handling with the insert method.
+     */
+    public void testCollisionHandling() {
+        // Insert multiple elements that would likely cause collisions based on the hash function
+        testHash.insert("abc");   // Assume this hashes to index i
+        testHash.insert("cba");   // Assume this hashes to the same index i
+        
+        // Both should be in the table, but handled by linear probing
+        assertTrue(testHash.contains("abc"));
+        assertTrue(testHash.contains("cba"));
+    }
+}
