@@ -2,48 +2,43 @@
  * Node class
  *
  * @author Maanasa Ramakrishnan (maanasar)
-           Marie Muya (mariem26)
+ *         Marie Muya (mariem26)
  * @version 2024.09.20
- */
+*/
 
- public class Node<D>
-    {
+public class Node {
+    String data;
+    Node next;
+    Node prev;
 
-        // The data element stored in the node.
-        public D data;
-
-        // The next node in the sequence.
-        public Node<D> next;
-
-        /**
-         * Creates a new node with the given data
-         *
-         * @param d
-         *            the data to put inside the node
-         */
-        public Node(D d)
-        {
-            data = d;
-        }
-               
-        /**
-         * Sets the node after this node
-         *
-         * @param n
-         *            the node after this one
-         */
-        public void set(Node<D> n)
-        {
-            next = n;
-        }
-
-        /**
-         * Gets the data in the node
-         *
-         * @return the data in the node
-         */
-        public D get()
-        {
-            return data;
-        }
+    public Node(String data) {
+        this.data = data;
+        this.next = null;
+        this.prev = null;
     }
+
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
+	}
+
+	public Node getNext() {
+		return next;
+	}
+
+	public void setNext(Node next) {
+		this.next = next;
+	}
+
+	public Node getPrev() {
+		return prev;
+	}
+
+	public void setPrev(Node prev) {
+		this.prev = prev;
+	}
+    
+}
