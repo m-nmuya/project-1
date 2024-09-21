@@ -45,4 +45,39 @@ public class RecordTest extends TestCase {
         testRecord.setNode(newNode);
         assertEquals(newNode, testRecord.getNode());
     }
+
+    /**
+     * Test setting and getting node data.
+     */
+    public void testNodeData() {
+        Node newNode = new Node("Cross Road Blues");
+        testRecord.setNode(newNode);
+        assertEquals("Cross Road Blues", testRecord.getNode().getData());
+
+        // Change the data and verify
+        newNode.setData("Hellhound on My Trail");
+        assertEquals("Hellhound on My Trail", testRecord.getNode().getData());
+    }
+
+    /**
+     * Test node chaining with next and prev.
+     */
+    public void testNodeNextAndPrev() {
+        Node firstNode = new Node("Blind Willie McTell");
+        Node secondNode = new Node("Lead Belly");
+        
+        firstNode.setNext(secondNode);  
+        secondNode.setPrev(firstNode);  
+        
+        assertEquals(secondNode, firstNode.getNext());  
+        assertEquals(firstNode, secondNode.getPrev());  
+    }
+
+    /**
+     * Test setting a null node.
+     */
+    public void testSetNullNode() {
+        testRecord.setNode(null);
+        assertNull(testRecord.getNode());  
+    }
 }
