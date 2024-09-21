@@ -105,6 +105,7 @@ public class HashTest extends TestCase {
         Node node2 = new Node(null);
         hash3.insert("The Neptunes", node1);
         hash3.insert("TOMBSTONE", node2);
+        hash3.print();
 
         // Remove the element to create a tombstone
         hash3.remove("The Neptunes");
@@ -119,10 +120,12 @@ public class HashTest extends TestCase {
         // Insert an element with a key
         Node node1 = new Node("Hit Different");
         testHash.insert("The Neptunes", node1);
+        testHash.print();
 
         // Insert another element with the same key but different data
         Node node2 = new Node("Casual");
         testHash.insert("The Neptunes", node2);
+        testHash.print();
 
         // Check that the node associated with "The Neptunes" has been updated
         assertEquals("Casual", testHash.find("The Neptunes").getNode().getData());
