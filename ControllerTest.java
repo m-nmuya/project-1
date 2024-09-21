@@ -172,7 +172,9 @@ public class ControllerTest extends TestCase {
      * Test removing a song that exists in the database.
      */
     public void testRemoveExistingSong() {
-        // Insert a song
+        // Insert songs
+        controller.insert("Blind Lemon Jefferson", "Long Lonesome Blues");
+        controller.insert("Ray Charles", "Mississippi Boweavil Blues");
         controller.insert("Ma Rainey", "Fixin' To Die Blues");
         
         // Remove the song
@@ -184,7 +186,7 @@ public class ControllerTest extends TestCase {
         assertTrue(actualOutput.contains("TOMBSTONE")); // The song should be marked as TOMBSTONE
         
         // Verify the song count is decremented
-        assertTrue(actualOutput.contains("total songs: 0")); // Song count should be decremented
+        assertTrue(actualOutput.contains("total songs: 2")); // Song count should be decremented
 
         // Verify the song is removed from the graph
         controller.printGraph();
