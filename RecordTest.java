@@ -11,13 +11,13 @@ import student.TestCase;
 public class RecordTest extends TestCase {
     
     private Record testRecord;
-    private DoubleLinkedList.Node testNode;
+    private Node testNode;
 
     /**
      * Set up the test environment.
      */
     public void setUp() {
-        testNode = new DoubleLinkedList.Node("Long Lonesome Blues");
+        testNode = new Node("Long Lonesome Blues");
         testRecord = new Record("Blind Lemon Jefferson", testNode);
     }
 
@@ -41,7 +41,7 @@ public class RecordTest extends TestCase {
      * Test the setNode method.
      */
     public void testSetNode() {
-        DoubleLinkedList.Node newNode = new DoubleLinkedList.Node("Ma Rainey's Black Bottom");
+        Node newNode = new Node("Ma Rainey's Black Bottom");
         testRecord.setNode(newNode);
         assertEquals(newNode, testRecord.getNode());
     }
