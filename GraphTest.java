@@ -49,6 +49,7 @@ public class GraphTest extends TestCase {
         graph.addRelationship("Blind Lemon Jefferson", "Long Lonesome Blues");
         graph.addRelationship("Ma Rainey", "Ma Rainey's Black Bottom");
 
+        graph.removeSong("PartyRockAnthem");
         graph.removeSong("Long Lonesome Blues");
 
         // Ensure the song has been removed and no relationship exists
@@ -62,6 +63,7 @@ public class GraphTest extends TestCase {
         graph.addRelationship("Blind Lemon Jefferson", "Long Lonesome Blues");
         graph.addRelationship("Ma Rainey", "Ma Rainey's Black Bottom");
 
+        graph.removeArtist("Clairo");
         graph.removeArtist("Blind Lemon Jefferson");
 
         // Ensure the artist has been removed and no relationship exists
@@ -106,4 +108,5 @@ public class GraphTest extends TestCase {
         assertTrue(graph.hasRelationship("Blind Lemon Jefferson", "Long Lonesome Blues"));
         assertFalse(graph.hasRelationship("Ma Rainey", "Long Lonesome Blues")); // No relationship exists
     }
+    
 }
