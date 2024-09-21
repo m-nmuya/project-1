@@ -224,6 +224,18 @@ public class CommandProcessorTest extends TestCase {
 
         // Check for the invalid print command format message
         assertTrue(actualOutput.contains("Invalid command format: print"));
+        
+     // Test with an invalid print command (missing "song", "artist", or "graph")
+        command = "print playlist";
+
+        // Process the command
+        commandProcessor.processCommand(command);
+
+        // Capture the output
+        actualOutput = systemOut().getHistory();
+
+        // Check for the invalid print command format message
+        assertTrue(actualOutput.contains("Invalid print command format: print"));
     }
 
     /**
