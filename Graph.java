@@ -5,7 +5,6 @@
  *         Marie Muya (mariem26)
  * @version 2024.09.20
 */
-
 import java.util.Arrays;
 
 public class Graph {
@@ -13,7 +12,8 @@ public class Graph {
 	private boolean[][] adjacencyList; // 2D array representing the adjacency list (connections between nodes)
 	private int nodeCount; // Current number of nodes in the graph
 	private static final int INITIAL_SIZE = 10; // Initial size of the arrays
-
+	private DoubleLinkedList[] adjacentList; 
+	
 	// Constructor to initialize the graph with a default size
 	public Graph() {
 		nodes = new String[INITIAL_SIZE]; // Initialize the nodes array with a default size
@@ -89,40 +89,30 @@ public class Graph {
 		// Iterate over all nodes in the graph
 		for (int i = 0; i < nodeCount; i++) {
 			if (nodes[i] != null && !visited[i]) { // If the node exists and hasn't been visited
-				int componentSize = breadthFirstSearch(i, visited); // Perform BFS to find the size of the component
+				int componentSize = search(i, visited); // Perform BFS to find the size of the component
 				components++; // Increment the component count
 				if (componentSize > largestComponentSize) {
 					largestComponentSize = componentSize; // Update the largest component size
 				}
 			}
 		}
-
 		// Output the results
 		System.out.println("There are " + components + " connected components");
 		System.out.println("The largest connected component has " + largestComponentSize + " elements");
 	}
 
-	// Breadth-first search (BFS) to explore the graph and count the size of a
-	// component
-	private int breadthFirstSearch(int startIndex, boolean[] visited) {
-		Queue<Integer> queue = new Queue<>(); // Create a queue for BFS
-		queue.add(startIndex); // Start BFS from the given node
-		visited[startIndex] = true; // Mark the start node as visited
-		int count = 0; // Initialize component size counter
+	// search to explore the graph and count the size of a component using DFS
+	private int search(int nodeIndex, boolean[] visited) {
+	    visited[nodeIndex] = true; // Mark the node as visited
+	    int count = 1; // Initialize component size counter with current node
 
-		// While the queue is not empty
-		while (!queue.isEmpty()) {
-			int nodeIndex = queue.poll(); // Dequeue a node
-			count++; // Increment the component size
-			// Check all adjacent nodes
-			for (int i = 0; i < nodeCount; i++) {
-				if (adjacencyList[nodeIndex][i] && !visited[i]) { // If an adjacent node exists and is not visited
-					visited[i] = true; // Mark it as visited
-					queue.add(i); // Enqueue it
-				}
-			}
-		}
-		return count; // Return the size of the component
+	    // Check all adjacent nodes
+	    for (int i = 0; i < nodeCount; i++) {
+	        if (adjacencyList[nodeIndex][i] && !visited[i]) { // If an adjacent node exists and is not visited
+	            count += search(i, visited); // Recursively visit the adjacent node
+	        }
+	    }
+	    return count; // Return the size of the component
 	}
 
 	// Helper method to get the index of a node in the nodes array
@@ -147,67 +137,6 @@ public class Graph {
 		adjacencyList = newList; // Replace the old adjacency matrix with the new one
 	}
 
-	// Inner class implementing a simple queue for BFS
-	class Queue<T> {
-		private Node<T> front, rear; // Pointers to the front and rear of the queue
-		private int size; // Size of the queue
-
-		// Constructor to initialize the queue
-		public Queue() {
-			front = rear = null;
-			size = 0;
-		}
-
-		// Method to add an element to the queue
-		public void add(T value) {
-			Node<T> newNode = new Node<>(value); // Create a new node
-			if (rear != null) {
-				rear.next = newNode; // Link the new node at the end of the queue
-			}
-			rear = newNode; // Move the rear pointer to the new node
-			if (front == null) {
-				front = rear; // If the queue was empty, set front to rear
-			}
-			size++; // Increment the queue size
-		}
-
-		// Method to remove and return the front element of the queue
-		public T poll() {
-			if (front == null) { // If the queue is empty, return null
-				return null;
-			}
-			T value = front.value; // Get the front value
-			front = front.next; // Move the front pointer to the next node
-			if (front == null) {
-				rear = null; // If the queue is now empty, reset rear
-			}
-			size--; // Decrement the queue size
-			return value; // Return the value
-		}
-
-		// Method to check if the queue is empty
-		public boolean isEmpty() {
-			return front == null; // Return true if there are no elements in the queue
-		}
-
-		// Method to get the size of the queue
-		public int size() {
-			return size; // Return the size of the queue
-		}
-
-		// Inner class representing a node in the queue
-		private class Node<T> {
-			T value; // The value stored in the node
-			Node<T> next; // Pointer to the next node
-
-			// Constructor to initialize a node with a value
-			Node(T value) {
-				this.value = value;
-				this.next = null;
-			}
-		}
-	}
-
 	public boolean hasRelationship(String artist, String song) {
 	    // Find the index of the artist
 	    int artistIndex = getNodeIndex(artist);
@@ -218,7 +147,6 @@ public class Graph {
 	    if (artistIndex == -1 || songIndex == -1) {
 	        return false; // If either doesn't exist, return false
 	    }
-
 	    // Return true if there is a relationship (edge) between the artist and the song
 	    return adjacencyList[artistIndex][songIndex];
 	}
