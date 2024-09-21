@@ -14,7 +14,7 @@ public class HashTest extends TestCase {
      */
     public void setUp() {
         // create a test instance of hash
-        testHash = new Hash(10);
+        testHash = new Hash(2);
     }
 
 
@@ -50,8 +50,9 @@ public class HashTest extends TestCase {
         // Verify that inserted elements can be found
         assertNotNull(testHash.find("The Neptunes"));
         assertNotNull(testHash.find("Chappell Roan"));
-        assertEquals("Hit Different", testHash.find("The Neptunes").getNode());
-        assertEquals("Casual", testHash.find("Chappell Roan").getNode());
+        
+        assertEquals("Hit Different", testHash.find("The Neptunes").getNode().getData());
+        assertEquals("Casual", testHash.find("Chappell Roan").getNode().getData());
     }
 
     /**
@@ -65,13 +66,14 @@ public class HashTest extends TestCase {
         testHash.insert("Sabrina Carpenter", node2);
         
         // Remove elements
-        assertFalse(testHash.remove("Clairo"));
+        testHash.print();
+        assertTrue(testHash.remove("Clairo"));
         assertFalse(testHash.remove("SZA"));
         testHash.print();
         
         // Verify that removed elements can no longer be found
         assertNull(testHash.find("Clairo"));
-        assertNull(testHash.find("Sabrina Carpenter")); 
+        assertNotNull(testHash.find("Sabrina Carpenter")); 
     }
 
     /**
@@ -83,6 +85,7 @@ public class HashTest extends TestCase {
         // Insert enough elements to trigger resize
         hash2.insert("Clairo", new Node("JukeBox"));
         hash2.insert("SZA", new Node("PartyRockAnthem"));
+        hash2.print();
         
         // This should trigger a resize
         hash2.insert("Tyler", new Node("Juno"));
@@ -92,5 +95,36 @@ public class HashTest extends TestCase {
         assertNotNull(hash2.find("Clairo"));
         assertNotNull(hash2.find("SZA"));
         assertNotNull(hash2.find("Tyler"));
+    }
+    
+    public void testPrintTombstone() {
+        Hash hash3 = new Hash(2); // Create a new hash table with size 10
+
+        // Insert an element
+        Node node1 = new Node("Hit Different");
+        Node node2 = new Node(null);
+        hash3.insert("The Neptunes", node1);
+        hash3.insert("TOMBSTONE", node2);
+
+        // Remove the element to create a tombstone
+        hash3.remove("The Neptunes");
+
+        // Capture the print output (using System output capture)
+        hash3.print();
+        assertNotNull(hash3.find("TOMBSTONE"));
+
+    }
+    
+    public void testInsertDuplicateKey() {
+        // Insert an element with a key
+        Node node1 = new Node("Hit Different");
+        testHash.insert("The Neptunes", node1);
+
+        // Insert another element with the same key but different data
+        Node node2 = new Node("Casual");
+        testHash.insert("The Neptunes", node2);
+
+        // Check that the node associated with "The Neptunes" has been updated
+        assertEquals("Casual", testHash.find("The Neptunes").getNode().getData());
     }
 }
