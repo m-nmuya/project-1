@@ -15,7 +15,8 @@ public class DoubleLinkedList {
         head = null;
         tail = null;
         size = 0;
-    }    
+    }   
+    
     // Method to add a new element to the linked list
     public void add(String data) {
         Node newNode = new Node(data);
@@ -73,17 +74,6 @@ public class DoubleLinkedList {
         System.out.println();
     }
 
-    // Node class for the doubly linked list
-    protected static class Node {
-        String data;
-        Node next;
-        Node prev;
-
-        Node(String data) {
-            this.data = data;
-        }
-    }
-    
     public boolean isEmpty() {
         return size == 0;
     }
