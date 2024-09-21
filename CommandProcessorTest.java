@@ -92,6 +92,9 @@ public class CommandProcessorTest extends TestCase {
 
         // Process the command
         commandProcessor.processCommand(command);
+        
+        command = "remove artist";
+        commandProcessor.processCommand(command);
 
         // Capture the output
         String actualOutput = systemOut().getHistory();
