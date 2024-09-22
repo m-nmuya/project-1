@@ -10,8 +10,8 @@ public class Controller {
 
     // Arrays to store linked lists of artists and songs, representing the hash
     // table
-    private DoubleLinkedList[] artistList;
-    private DoubleLinkedList[] songList;
+    private DoubleLL[] artistList;
+    private DoubleLL[] songList;
 
     // Hash functions for artists and songs
     private final Hash artistHash;
@@ -32,11 +32,11 @@ public class Controller {
         this.songHash = new Hash(initialSize);
 
         // Initialize artist and song lists (hash tables) with linked lists
-        this.artistList = new DoubleLinkedList[initialSize];
-        this.songList = new DoubleLinkedList[initialSize];
+        this.artistList = new DoubleLL[initialSize];
+        this.songList = new DoubleLL[initialSize];
         for (int i = 0; i < initialSize; i++) {
-            artistList[i] = new DoubleLinkedList();
-            songList[i] = new DoubleLinkedList();
+            artistList[i] = new DoubleLL();
+            songList[i] = new DoubleLL();
         }
 
         // Initialize the artist and song counters
@@ -46,13 +46,16 @@ public class Controller {
 
     // Method to print all songs in the database with their hash table index
     public void printSongs() {
-        for (int i = songList.length - 1; i >= 0; i--) {
+        int counter = 0;
+        for (int i = 0; i < songList.length; i++) {
             Node current = songList[i].getHead();
             while (current != null) {
                 if (!current.data.equals(TOMBSTONE)) {
-                    System.out.println(i + ": |" + current.data + "|");
+                    System.out.println(counter + ": |" + current.data + "|");
+                    counter++;
                 } else if (current.data.equals(TOMBSTONE)) {
-                    System.out.println(i + ": " + current.data);
+                    System.out.println(counter + ": " + current.data);
+                    counter++;
                 }
                 current = current.next;
             }
@@ -62,13 +65,16 @@ public class Controller {
 
     // Method to print all artists in the database with their hash table index
     public void printArtists() {
-        for (int i = artistList.length - 1; i >= 0; i--) {
+        int counter = 0;
+        for (int i = 0; i < artistList.length; i++) {
             Node current = artistList[i].getHead();
             while (current != null) {
                 if (!current.data.equals(TOMBSTONE)) {
-                    System.out.println(i + ": |" + current.data + "|");
+                    System.out.println(counter + ": |" + current.data + "|");
+                    counter++;
                 } else if (current.data.equals(TOMBSTONE)) {
-                    System.out.println(i + ": " + current.data);
+                    System.out.println(counter + ": " + current.data);
+                    counter++;
                 }
                 current = current.next;
             }
@@ -82,12 +88,12 @@ public class Controller {
     }
 
     // Helper method to double the size of the song hash table when needed
-    private void doubleTableSize(DoubleLinkedList[] list) {
+    private void doubleTableSize(DoubleLL[] list) {
         int newSize = list.length * 2; // Calculate the new size of the hash table
-        DoubleLinkedList[] newList = new DoubleLinkedList[newSize]; // Create a new hash table
+        DoubleLL[] newList = new DoubleLL[newSize]; // Create a new hash table
         // Initialize the new hash table
         for (int i = 0; i < newSize; i++) {
-            newList[i] = new DoubleLinkedList();
+            newList[i] = new DoubleLL();
         }
         // Rehash all elements from the old hash table into the new one
         for (int i = 0; i < list.length; i++) {
@@ -113,7 +119,7 @@ public class Controller {
                 current.data = TOMBSTONE; // Mark as tombstone
                 songCount--;
                 graph.removeSong(song); // Remove the song from the graph
-                //return;
+                return;
             }
             current = current.next;
         }
@@ -174,14 +180,16 @@ public class Controller {
             System.out.println("|" + artist + "<SEP>" + song + "| duplicates a record already in the database.");
             return; // If the relationship exists, return early to prevent further processing
         }
-        if (!artistExists && songExists) {
-            System.out.println("|" + artist + "| is already in the Artist database.");
-        }
+
         if (!artistExists) {
             // Add the artist to the database if it doesn't exist
             artistList[artistIndex].add(artist);
             artistCount++;
             System.out.println("|" + artist + "| is added to the Artist database.");
+        } else {
+            if (!artistExists && songExists) {
+                System.out.println("|" + artist + "| is already in the Artist database.");
+            }
         }
 
         if (!songExists) {
@@ -212,5 +220,4 @@ public class Controller {
         // Add a relationship between the artist and song in the graph
         graph.addRelationship(artist, song);
     }
-
 }
