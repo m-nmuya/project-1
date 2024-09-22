@@ -27,17 +27,45 @@
 // during the discussion. I have violated neither the spirit nor
 // letter of this restriction.
 
+/**
+ * GraphProject class
+ *
+ * @author Maanasa Ramakrishnan (maanasar)
+ *         Marie Muya (mariem26)
+ * @version 2024.09.20
+*/
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class GraphProject {
-    /**
-     * @param args
-     *            Command line parameters
-     */
     public static void main(String[] args) {
-        // This is the main file for the program.
+        // Check if the program received exactly two command-line arguments
+        if (args.length != 2) {
+            System.out.println("Usage: java GraphProject <initHashSize> <commandFile>");
+            return; // Exit if the arguments are incorrect
+        }
+        // Parse the initial hash size from the first argument
         int initHashSize = Integer.parseInt(args[0]);
+        // Get the path to the command file from the second argument
         String commandFile = args[1];
 
-        Controller controller = new Controller(initHashSize);
-        CommandProcessor commandFile = new CommandProcessor(fileName);
+        // Initialize the Controller with the graph and initial hash size
+        Controller controller = new Controller(new Graph(initHashSize), initHashSize);
+        // Create a CommandProcessor instance to handle commands
+        CommandProcessor commandProcessor = new CommandProcessor(controller);
+
+        // Try to read the commands from the provided file
+        try (BufferedReader br = new BufferedReader(new FileReader(commandFile))) {
+            String line;
+            // Read each line from the command file and process it
+            while ((line = br.readLine()) != null) {
+                commandProcessor.processCommand(line); // Process the command
+            }
+        } catch (IOException e) {
+            // Handle any errors that occur while reading the file
+            System.err.println("Error reading command file: " + e.getMessage());
+        }
     }
 }
