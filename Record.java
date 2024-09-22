@@ -9,7 +9,8 @@
 public class Record {
    private String key;
    private Node node;
-
+   private boolean isTombstone; // To mark deleted entries
+   
    public Record(String key, Node node) {
        this.key = key;
        this.node = node;
@@ -29,5 +30,12 @@ public class Record {
 
    public void setNode(Node node) {
        this.node = node;
+   }
+   public boolean isTombstone() {
+       return isTombstone;
+   }
+
+   public void markAsTombstone() {
+       this.isTombstone = true;
    }
 }
