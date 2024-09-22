@@ -18,7 +18,7 @@ public class CommandProcessorTest extends TestCase {
      * Set up the test environment with a real controller.
      */
     public void setUp() {
-        graph = new Graph();  // Assuming a Graph class is available
+        graph = new Graph(10);  // Assuming a Graph class is available
         controller = new Controller(graph, 10); // Initialize the controller with a small hash table size
         commandProcessor = new CommandProcessor(controller); // Inject the real Controller
     }
@@ -221,7 +221,7 @@ public class CommandProcessorTest extends TestCase {
     public void testInvalidPrintCommandFormat() {
         String command = "print"; // Missing what to print (artist or song)
 
-        // Capture the output
+        // Capture the output 
         commandProcessor.processCommand(command);
         String actualOutput = systemOut().getHistory();
 
