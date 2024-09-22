@@ -35,7 +35,7 @@ public class CommandProcessor {
                String[] insertParts = data.split("<SEP>", 2);
                // Check if the data is correctly formatted (artist:song)
                if (insertParts.length == 2) {
-               	//System.out.println("INSERT: ARTIST: " + insertParts[0] + "\tSONG:" + insertParts[1]);
+                //System.out.println("INSERT: ARTIST: " + insertParts[0] + "\tSONG:" + insertParts[1]);
                    // Call the controller's insert method with artist and song
                    controller.insert(insertParts[0], insertParts[1]);
                } else {
@@ -61,7 +61,9 @@ public class CommandProcessor {
                    else {
                        System.out.println("Invalid remove command format: " + command);
                    }
-               } 
+               } else {
+                   System.out.println("Invalid remove command format: " + command);
+               }
                break;
 
            case "print":
